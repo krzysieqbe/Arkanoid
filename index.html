@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width" />
-    <title>arc</title>
+    <title>Arkanoid</title>
 </head>
 <style>
     #mainWrapper {
@@ -19,10 +19,13 @@
 <body>
     <div id="mainWrapper">
         <div id="test"></div>
+        <audio id="bounce">
+            <source src="./sounds/bounce.wav" type="audio/wav">
+        </audio>
         <div>
             <span id="debug"></span>
             <h1>
-                Arcanoid
+                Arkanoid
             </h1>
             <div class="btn" id="startBtn">
                 New Game
@@ -34,7 +37,7 @@
             </p>
             <p id="score" style="display: inline;" width="80px">0</p>
         </div>
-        <div id="gameWindow" />
+        <div id="gameWindow"></div>
     </div>
     <script>
         window.onload = function() {
@@ -45,6 +48,7 @@
 
             var canvas = document.getElementById('gameStage');
             var context = canvas.getContext("2d");
+            var audioBounce = document.getElementById("bounce");
 
             var debug = function(text) {
                 document.getElementById('debug').innerHTML = text;
@@ -91,6 +95,7 @@
                 this.posY = y;
                 this.size = s;
                 this.speedX = spdX;
+                this.defaultSpeedX = spdX;
                 this.speedY = spdY;
                 this.boxes = [];
 
@@ -118,18 +123,18 @@
                 var game = this;
 
                 this.running = false;
-                this.ball = new Ball(80, 180, 3, 0.8, 3);
-                this.boxes = [];
-                this.player = new Player(windowWidth / 2 - 35, 70, 5, 3, 0);
-                this.score = 0;
-
-                for (i = 0; i < 4; i++) {
-                    for (j = 0; j < 8; j++)
-                        this.boxes.push(new Box(j * windowWidth / 8 + 1, i * windowHeight / 16 + 1, windowWidth / 8 - 2, windowHeight / 16 - 2, 1));
-                };
 
                 this.init = function() {
+                    this.ball = new Ball(80, 180, 3, 6, 5);
+                    this.boxes = [];
+                    this.player = new Player(windowWidth / 2 - 35, 70, 5, 3, 0);
+                    this.score = 0;
                     this.running = true;
+
+                    for (i = 0; i < 4; i++) {
+                        for (j = 0; j < 8; j++)
+                            this.boxes.push(new Box(j * windowWidth / 8 + 1, i * windowHeight / 16 + 1, windowWidth / 8 - 2, windowHeight / 16 - 2, 1));
+                    };
 
                     this.execute();
                 };
@@ -142,17 +147,25 @@
                 };
 
                 this.checkForCollision = function(ball) {
-                    if (ball.posY + ball.size / 2 >= windowHeight - this.player.height && (ball.posX - ball.size / 2 >= this.player.posX && ball.posX + ball.size / 2 <= this.player.posX + this.player.width)) {
+                    var ballCenterX = ball.posX - ball.size / 2;
+                    var ballCenterY = ball.posY + ball.size / 2;
+                    var playerCenterX = this.player.posX + this.player.width / 2;
+                    if (ballCenterY >= windowHeight - this.player.height && (ballCenterX >= this.player.posX && ballCenterX <= this.player.posX + this.player.width)) {
                         ball.speedY = -1 * ball.speedY;
+
+                        ball.speedX = 2 * ball.defaultSpeedX * (ballCenterX - playerCenterX) / (this.player.width / 2);
+                        //////audioBounce.play();
                     }
 
                     //detecting wall collision
                     if (ball.posX <= ball.size / 2 || ball.posX >= windowWidth + ball.size / 2) {
                         ball.speedX = -1 * ball.speedX;
+                        //////audioBounce.play();
                     }
 
                     if (ball.posY <= ball.size / 2) {
                         ball.speedY = -1 * ball.speedY;
+                        //////audioBounce.play();
                     }
 
                     if (ball.posY + ball.size / 2 >= windowHeight) {
@@ -170,6 +183,7 @@
                                 box.durability = 0;
                                 game.score = game.score + 1;
                                 ball.speedY = -1 * ball.speedY;
+                                //////audioBounce.play();
                             }
 
                             //detecting vertical collision
@@ -180,6 +194,7 @@
                                 box.durability = 0;
                                 game.score = game.score + 1;
                                 ball.speedX = -1 * ball.speedX;
+                                ////audioBounce.play();
                             }
                         };
                     });
@@ -201,7 +216,7 @@
                         game.boxes.forEach(function(box) {
                             box.renderBox();
                         });
-                    }, 15);
+                    }, 1000 / 15);
                 };
             };
 
