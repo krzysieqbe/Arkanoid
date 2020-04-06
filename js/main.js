@@ -77,7 +77,7 @@ window.onload = function() {
                 };
             } else {
                 this.posX = player.posX + this.posOnPaddle * player.width;
-                this.posY = windowHeight - (player.height + this.size / 2);
+                this.posY = windowHeight - (player.height + this.size / 2 + 3);
             }
         };
 
@@ -139,27 +139,78 @@ window.onload = function() {
 
             //detecting box collision
             this.boxes.forEach(function(box) {
+                var collisionType;
+                var distanceFromBorder;
                 if (box.durability > 0) {
                     //detecting horizontal collision
+                    /* if ((ball.posY - ball.size / 2 <= box.posY + box.height && ball.posY >= box.posY) &&
+                         (ball.posX - ball.size / 2 >= box.posX &&
+                             ball.posX + ball.size / 2 <= box.posX + box.width)) {
+                         //console.log('collision 1', ball.posX, ball.posY);
+                         box.durability = 0;
+                         game.score = game.score + 1;
+                         ball.speedY = -1 * ball.speedY;
+                         //////audioBounce.play();
+                         console.log(1, ball.posX - box.posX);
+                         console.log(2, box.posX + box.width - ball.posX);
+                         console.log(3, ball.posY - box.posY);
+                         console.log(4, box.posY + box.height - ball.posY);
+
+                     }
+
+                     //detecting vertical collision
+                     if ((ball.posX - ball.size / 2 <= box.posX + box.width && ball.posX - ball.size / 2 >= box.posX) &&
+                         (ball.posY - ball.size / 2 >= box.posY &&
+                             ball.posY + ball.size / 2 <= box.posY + box.height)) {
+                         //console.log('collision 3', ball.posX, ball.posY);
+                         box.durability = 0;
+                         game.score = game.score + 1;
+                         ball.speedX = -1 * ball.speedX;
+
+                         console.log(1, ball.posX - box.posX);
+                         console.log(, box.posX + box.width - ball.posX);
+                         console.log(3, ball.posY - box.posY);
+                         console.log(4, box.posY + box.height - ball.posY);
+                         ////audioBounce.play();
+                     }*/
+
+                    //checking for collision and detecting collisionType
                     if ((ball.posY - ball.size / 2 <= box.posY + box.height && ball.posY >= box.posY) &&
                         (ball.posX - ball.size / 2 >= box.posX &&
                             ball.posX + ball.size / 2 <= box.posX + box.width)) {
-                        //console.log('collision 1', ball.posX, ball.posY);
-                        box.durability = 0;
-                        game.score = game.score + 1;
-                        ball.speedY = -1 * ball.speedY;
-                        //////audioBounce.play();
-                    }
 
-                    //detecting vertical collision
-                    if ((ball.posX - ball.size / 2 <= box.posX + box.width && ball.posX - ball.size / 2 >= box.posX) &&
-                        (ball.posY - ball.size / 2 >= box.posY &&
-                            ball.posY + ball.size / 2 <= box.posY + box.height)) {
-                        //console.log('collision 3', ball.posX, ball.posY);
+                        collisionType = 1;
+                        distanceFromBorder = ball.posX + ball.size / 2 - box.posX;
+                        console.log(1, distanceFromBorder);
+                        if (distanceFromBorder > box.posX + ball.size / 2 + box.width -
+                            (ball.posX + ball.size / 2)) {
+                            collisionType = 1;
+                            distanceFromBorder = box.posX + box.width - (ball.posX - ball.size / 2);
+                            console.log(2, distanceFromBorder);
+                        }
+                        if (distanceFromBorder > ball.posY + ball.size / 2 - box.posY) {
+                            collisionType = 2;
+                            distanceFromBorder = ball.posY + ball.size / 2 - box.posY;
+                            console.log(3, distanceFromBorder);
+                        }
+                        if (distanceFromBorder > box.posY + box.height -
+                            (ball.posY + ball.size / 2)) {
+                            collisionType = 2;
+                            distanceFromBorder = box.posY + box.height - (ball.posY + ball.size / 2);
+                            console.log(4, distanceFromBorder);
+                        }
+                        console.log('--------------------------')
+                        switch (collisionType) {
+                            case 1:
+                                ball.speedX *= -1;
+                                break;
+                            case 2:
+                                ball.speedY *= -1;
+                        }
+
                         box.durability = 0;
                         game.score = game.score + 1;
-                        ball.speedX = -1 * ball.speedX;
-                        ////audioBounce.play();
+
                     }
                 };
             });
@@ -201,7 +252,7 @@ window.onload = function() {
         e.preventDefault();
     }, false);
 
-    canvas.addEventListener("mousemove", function(e) {
+    document.addEventListener("mousemove", function(e) {
         var rect = canvas.getBoundingClientRect();
         var mousePosX = e.clientX - rect.left;
 
