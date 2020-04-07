@@ -8,6 +8,10 @@ window.onload = function() {
     var context = canvas.getContext("2d");
     var audioBounce = document.getElementById("bounce");
 
+    var ballImg = document.getElementById("ballImg");
+    var paddleImg = document.getElementById("paddleImg");
+    var brickImg = document.getElementById("brickImg");
+
     var debug = function(text) {
         document.getElementById('debug').innerHTML = text;
     };
@@ -26,8 +30,10 @@ window.onload = function() {
         this.renderPad = function() {
             //c = document.getElementById("gameStage");
             //ctx = c.getContext("2d");
-            context.fillStyle = "#732cdd";
-            context.fillRect(this.posX, windowHeight - this.height, this.width, this.height);
+            //context.fillStyle = "#732cdd";
+            //context.fillRect(this.posX, windowHeight - this.height, this.width, this.height);
+
+            context.drawImage(paddleImg, this.posX, windowHeight - this.height, this.width, this.height);
         };
     };
 
@@ -42,8 +48,9 @@ window.onload = function() {
             if (this.durability > 0) {
                 //c = document.getElementById("gameStage");
                 //ctx = c.getContext("2d");
-                context.fillStyle = "#2d68c6";
-                context.fillRect(this.posX, this.posY, this.width, this.height);
+                //context.fillStyle = "#2d68c6";
+                //context.fillRect(this.posX, this.posY, this.width, this.height);
+                context.drawImage(brickImg, this.posX, this.posY, this.width, this.height);
             }
         };
     };
@@ -62,9 +69,11 @@ window.onload = function() {
         this.renderBall = function() {
             //c = document.getElementById("gameStage");
             //ctx = c.getContext("2d");
-            context.arc(this.posX, this.posY, this.size, 0, 2 * Math.PI);
-            context.fillStyle = "#da63ed";
-            context.fill();
+
+            //context.arc(this.posX, this.posY, this.size, 0, 2 * Math.PI);
+            //context.fillStyle = "#da63ed";
+            context.drawImage(ballImg, this.posX - this.size, this.posY - this.size, 2 * this.size, 2 * this.size);
+            //context.fill();
         };
 
         this.moveBall = function(player) {
@@ -95,10 +104,12 @@ window.onload = function() {
             this.player = new Player(windowWidth / 2 - 35, 90, 15, 3, 0);
             this.score = 0;
             this.running = true;
-
-            for (i = 0; i < 4; i++) {
+            //Level 1
+            for (i = 0; i < 6; i++) {
                 for (j = 0; j < 8; j++)
-                    this.boxes.push(new Box(j * windowWidth / 8 + 1, i * windowHeight / 16 + 1, windowWidth / 8 - 2, windowHeight / 16 - 2, 1));
+                    if (i && j && i < 5 && j < 7) {
+                        this.boxes.push(new Box(j * windowWidth / 8 + 1, i * windowHeight / 16 + 1, windowWidth / 8 - 2, windowHeight / 16 - 2, 1));
+                    }
             };
 
             this.execute();
@@ -112,8 +123,8 @@ window.onload = function() {
         };
 
         this.checkForCollision = function(ball) {
-            var ballCenterX = ball.posX - ball.size / 2;
-            var ballCenterY = ball.posY + ball.size / 2;
+            var ballCenterX = ball.posX - ball.size;
+            var ballCenterY = ball.posY + ball.size;
             var playerCenterX = this.player.posX + this.player.width / 2;
             if (ballCenterY >= windowHeight - this.player.height && (ballCenterX >= this.player.posX && ballCenterX <= this.player.posX + this.player.width)) {
                 ball.speedY = -1 * ball.speedY;
@@ -123,12 +134,12 @@ window.onload = function() {
             }
 
             //detecting wall collision
-            if (ball.posX <= ball.size / 2 || ball.posX >= windowWidth - ball.size / 2) {
+            if (ball.posX <= ball.size || ball.posX >= windowWidth - ball.size) {
                 ball.speedX = -1 * ball.speedX;
                 //////audioBounce.play();
             }
 
-            if (ball.posY <= ball.size / 2) {
+            if (ball.posY <= ball.size) {
                 ball.speedY = -1 * ball.speedY;
                 //////audioBounce.play();
             }
@@ -142,37 +153,6 @@ window.onload = function() {
                 var collisionType;
                 var distanceFromBorder;
                 if (box.durability > 0) {
-                    //detecting horizontal collision
-                    /* if ((ball.posY - ball.size / 2 <= box.posY + box.height && ball.posY >= box.posY) &&
-                         (ball.posX - ball.size / 2 >= box.posX &&
-                             ball.posX + ball.size / 2 <= box.posX + box.width)) {
-                         //console.log('collision 1', ball.posX, ball.posY);
-                         box.durability = 0;
-                         game.score = game.score + 1;
-                         ball.speedY = -1 * ball.speedY;
-                         //////audioBounce.play();
-                         console.log(1, ball.posX - box.posX);
-                         console.log(2, box.posX + box.width - ball.posX);
-                         console.log(3, ball.posY - box.posY);
-                         console.log(4, box.posY + box.height - ball.posY);
-
-                     }
-
-                     //detecting vertical collision
-                     if ((ball.posX - ball.size / 2 <= box.posX + box.width && ball.posX - ball.size / 2 >= box.posX) &&
-                         (ball.posY - ball.size / 2 >= box.posY &&
-                             ball.posY + ball.size / 2 <= box.posY + box.height)) {
-                         //console.log('collision 3', ball.posX, ball.posY);
-                         box.durability = 0;
-                         game.score = game.score + 1;
-                         ball.speedX = -1 * ball.speedX;
-
-                         console.log(1, ball.posX - box.posX);
-                         console.log(, box.posX + box.width - ball.posX);
-                         console.log(3, ball.posY - box.posY);
-                         console.log(4, box.posY + box.height - ball.posY);
-                         ////audioBounce.play();
-                     }*/
 
                     //checking for collision and detecting collisionType
                     if ((ball.posY - ball.size / 2 <= box.posY + box.height && ball.posY >= box.posY) &&
@@ -180,26 +160,26 @@ window.onload = function() {
                             ball.posX + ball.size / 2 <= box.posX + box.width)) {
 
                         collisionType = 1;
-                        distanceFromBorder = ball.posX + ball.size / 2 - box.posX;
-                        console.log(1, distanceFromBorder);
-                        if (distanceFromBorder > box.posX + ball.size / 2 + box.width -
-                            (ball.posX + ball.size / 2)) {
+                        distanceFromBorder = ball.posX + ball.size - box.posX;
+                        //console.log(1, distanceFromBorder);
+                        if (distanceFromBorder > box.posX + ball.size + box.width -
+                            (ball.posX + ball.size)) {
                             collisionType = 1;
-                            distanceFromBorder = box.posX + box.width - (ball.posX - ball.size / 2);
-                            console.log(2, distanceFromBorder);
+                            distanceFromBorder = box.posX + box.width - (ball.posX - ball.size);
+                            //console.log(2, distanceFromBorder);
                         }
-                        if (distanceFromBorder > ball.posY + ball.size / 2 - box.posY) {
+                        if (distanceFromBorder > ball.posY + ball.size - box.posY) {
                             collisionType = 2;
-                            distanceFromBorder = ball.posY + ball.size / 2 - box.posY;
-                            console.log(3, distanceFromBorder);
+                            distanceFromBorder = ball.posY + ball.size - box.posY;
+                            //console.log(3, distanceFromBorder);
                         }
                         if (distanceFromBorder > box.posY + box.height -
-                            (ball.posY + ball.size / 2)) {
+                            (ball.posY + ball.size)) {
                             collisionType = 2;
-                            distanceFromBorder = box.posY + box.height - (ball.posY + ball.size / 2);
-                            console.log(4, distanceFromBorder);
+                            distanceFromBorder = box.posY + box.height - (ball.posY + ball.size);
+                            //console.log(4, distanceFromBorder);
                         }
-                        console.log('--------------------------')
+                        //console.log('--------------------------')
                         switch (collisionType) {
                             case 1:
                                 ball.speedX *= -1;
@@ -253,13 +233,14 @@ window.onload = function() {
     }, false);
 
     document.addEventListener("mousemove", function(e) {
-        var rect = canvas.getBoundingClientRect();
-        var mousePosX = e.clientX - rect.left;
+        if (game.running) {
+            var rect = canvas.getBoundingClientRect();
+            var mousePosX = e.clientX - rect.left;
 
-        if (mousePosX - game.player.width / 2 > 0 && mousePosX + game.player.width / 2 < windowWidth) {
-            game.player.posX = mousePosX - game.player.width / 2;
+            if (mousePosX - game.player.width / 2 > 0 && mousePosX + game.player.width / 2 < windowWidth) {
+                game.player.posX = mousePosX - game.player.width / 2;
+            }
         }
-
     }, false);
 
     $(document).ondblclick = function() {
@@ -292,6 +273,6 @@ window.onload = function() {
         game.init();
         console.log('clicked');
     });
-    game.init();
+    //game.init();
 
 };
