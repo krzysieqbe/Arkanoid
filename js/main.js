@@ -11,6 +11,10 @@ window.onload = function() {
     var ballImg = document.getElementById("ballImg");
     var paddleImg = document.getElementById("paddleImg");
     var brickImg = document.getElementById("brickImg");
+    var bgImg = document.getElementById("bgImg");
+
+    //renderBackground
+    context.drawImage(bgImg, 0, 0, windowWidth, windowHeight);
 
     var debug = function(text) {
         document.getElementById('debug').innerHTML = text;
@@ -116,10 +120,11 @@ window.onload = function() {
         };
 
         this.clearScreen = function() {
-            //var c = document.getElementById("gameStage");
-            //var ctx = c.getContext("2d"); 
+            //clear screen
             context.clearRect(0, 0, canvas.width, canvas.height);
             context.beginPath();
+            //renderBackground
+            context.drawImage(bgImg, 0, 0, windowWidth, windowHeight);
         };
 
         this.checkForCollision = function(ball) {
@@ -150,7 +155,8 @@ window.onload = function() {
             }
 
             //detecting box collision
-            this.boxes.forEach(function(box) {
+            for (let i = 0; i < game.boxes.length; i++) {
+                var box = game.boxes[i];
                 var collisionType;
                 var distanceFromBorder;
                 if (box.durability > 0) {
@@ -181,17 +187,21 @@ window.onload = function() {
                         switch (collisionType) {
                             case 1:
                                 ball.speedX *= -1;
+                                ball.posX += ball.speedX
                                 break;
                             case 2:
                                 ball.speedY *= -1;
+                                ball.posY += ball.speedY;
+                                break;
                         }
 
-                        box.durability = 0;
+                        box.durability -= 1;
                         game.score = game.score + 1;
+                        break;
 
                     }
                 };
-            });
+            };
         };
 
         this.execute = function() {

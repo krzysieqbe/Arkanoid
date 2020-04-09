@@ -21,6 +21,8 @@
     }
     
     #mainWrapper {
+        display: grid;
+        grid-template-columns: auto auto;
         margin-left: "25px";
     }
     

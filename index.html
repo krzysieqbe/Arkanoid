@@ -12,25 +12,22 @@
 </head>
 
 <body>
+    <h1>
+        Arkanoid
+    </h1>
     <div id="mainWrapper">
-        <div id="test"></div>
-        <audio id="bounce">
-            <source src="./sounds/bounce.wav" type="audio/wav">
-        </audio>
         <div>
-            <span id="debug"></span>
-            <h1>
-                Arkanoid
-            </h1>
-            <div class="btn" id="startBtn">
-                New Game
+            <div>
+                <div class="btn" id="startBtn">
+                    New Game
+                </div>
             </div>
-        </div>
-        <div style="display: inline-block;">
-            <p style='display:inline'>
-                Score :
-            </p>
-            <p id="score" style="display: inline;" width="80px">0</p>
+            <div style="display: inline-block;">
+                <p style='display:inline'>
+                    Score :
+                </p>
+                <p id="score" style="display: inline;" width="80px">0</p>
+            </div>
         </div>
         <div id="gameWindow"></div>
     </div>
@@ -38,6 +35,7 @@
     <img id="ballImg" src="./img/ball3d.png" width="20" height="20" style="display: none;">
     <img id="paddleImg" src="./img/paddle3d.png" width="20" height="20" style="display: none;">
     <img id="brickImg" src="./img/brick3d.png" width="20" height="20" style="display: none;">
+    <img id="bgImg" src="./img/bg3.jpg" width="20" height="20" style="display: none;">
     <script type="text/javascript" src="js/main.js"></script>
 </body>
 
