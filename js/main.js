@@ -160,23 +160,21 @@ window.onload = function() {
                         ball.posX + ball.size * 2 > box.posX && ball.posX < box.posX + box.width) {
 
                         collisionType = 1;
-                        distanceFromBorder = ball.posX + ball.size - box.posX;
+                        distanceFromBorder = ball.posX + ball.size * 2 - box.posX;
                         //console.log(1, distanceFromBorder);
-                        if (distanceFromBorder > box.posX + ball.size + box.width -
-                            (ball.posX + ball.size)) {
+                        if (distanceFromBorder > box.posX + box.width - ball.posX) {
                             collisionType = 1;
-                            distanceFromBorder = box.posX + box.width - (ball.posX - ball.size);
+                            distanceFromBorder = box.posX + box.width - ball.posX;
                             //console.log(2, distanceFromBorder);
                         }
-                        if (distanceFromBorder > ball.posY + ball.size - box.posY) {
+                        if (distanceFromBorder > ball.posY + ball.size * 2 - box.posY) {
                             collisionType = 2;
-                            distanceFromBorder = ball.posY + ball.size - box.posY;
+                            distanceFromBorder = ball.posY + ball.size * 2 - box.posY;
                             //console.log(3, distanceFromBorder);
                         }
-                        if (distanceFromBorder > box.posY + box.height -
-                            (ball.posY + ball.size)) {
+                        if (distanceFromBorder > box.posY + box.height - ball.posY) {
                             collisionType = 2;
-                            distanceFromBorder = box.posY + box.height - (ball.posY + ball.size);
+                            distanceFromBorder = box.posY + box.height - ball.posY;
                             //console.log(4, distanceFromBorder);
                         }
                         //console.log('--------------------------')
@@ -243,9 +241,9 @@ window.onload = function() {
         }
     }, false);
 
-    $(document).ondblclick = function() {
+    document.addEventListener("dblclick", function(e) {
         game.ball.init = 1;
-    };
+    });
 
     $(document).keydown(function(e) {
         switch (e.which) {
@@ -271,7 +269,6 @@ window.onload = function() {
 
     document.getElementById("startBtn").addEventListener('click', function(e) {
         game.init();
-        console.log('clicked');
     });
     //game.init();
 
