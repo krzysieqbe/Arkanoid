@@ -72,21 +72,21 @@ window.onload = function() {
 
             //context.arc(this.posX, this.posY, this.size, 0, 2 * Math.PI);
             //context.fillStyle = "#da63ed";
-            context.drawImage(ballImg, this.posX - this.size, this.posY - this.size, 2 * this.size, 2 * this.size);
+            context.drawImage(ballImg, this.posX, this.posY, 2 * this.size, 2 * this.size);
             //context.fill();
         };
 
         this.moveBall = function(player) {
             if (this.init) {
-                if (this.posX + this.speedX < windowWidth - this.size / 2 || this.posX + this.speedX > this.size / 2) {
+                if (this.posX + this.speedX + this.size < windowWidth || this.posX + this.speedX > 0) {
                     this.posX = this.posX + this.speedX;
                 };
-                if (this.posY + this.speedY < windowHeight || this.posY + this.speedY > this.size / 2) {
+                if (this.posY + this.speedY < windowHeight || this.posY + this.speedY > 0) {
                     this.posY = this.posY + this.speedY;
                 };
             } else {
                 this.posX = player.posX + this.posOnPaddle * player.width;
-                this.posY = windowHeight - (player.height + this.size / 2 + 3);
+                this.posY = windowHeight - (player.height + this.size * 2 + 1);
             }
         };
 
@@ -126,6 +126,7 @@ window.onload = function() {
             var ballCenterX = ball.posX - ball.size;
             var ballCenterY = ball.posY + ball.size;
             var playerCenterX = this.player.posX + this.player.width / 2;
+            //detecting player collision
             if (ballCenterY >= windowHeight - this.player.height && (ballCenterX >= this.player.posX && ballCenterX <= this.player.posX + this.player.width)) {
                 ball.speedY = -1 * ball.speedY;
 
@@ -134,17 +135,17 @@ window.onload = function() {
             }
 
             //detecting wall collision
-            if (ball.posX <= ball.size || ball.posX >= windowWidth - ball.size) {
+            if (ball.posX <= 0 || ball.posX >= windowWidth - ball.size * 2) {
                 ball.speedX = -1 * ball.speedX;
                 //////audioBounce.play();
             }
 
-            if (ball.posY <= ball.size) {
+            if (ball.posY <= 0) {
                 ball.speedY = -1 * ball.speedY;
                 //////audioBounce.play();
             }
 
-            if (ball.posY + ball.size / 2 >= windowHeight) {
+            if (ball.posY + ball.size * 2 >= windowHeight) {
                 this.running = false;
             }
 
@@ -155,9 +156,8 @@ window.onload = function() {
                 if (box.durability > 0) {
 
                     //checking for collision and detecting collisionType
-                    if ((ball.posY - ball.size / 2 <= box.posY + box.height && ball.posY >= box.posY) &&
-                        (ball.posX - ball.size / 2 >= box.posX &&
-                            ball.posX + ball.size / 2 <= box.posX + box.width)) {
+                    if (ball.posY < box.posY + box.height && ball.posY + ball.size * 2 > box.posY &&
+                        ball.posX + ball.size * 2 > box.posX && ball.posX < box.posX + box.width) {
 
                         collisionType = 1;
                         distanceFromBorder = ball.posX + ball.size - box.posX;
