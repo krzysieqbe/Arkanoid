@@ -1,32 +1,47 @@
-*,
-*::after,
-*::before {
-    margin: 0;
-    padding: 0;
-    box-sizing: inherit;
-}
-
-html {
-    font-size: 62.5%;
-}
-
-body {
-    font-family: "Lato", sans-serif;
-    font-weight: 400;
-    font-size: 1.6rem;
-    line-height: 1.7;
-    color: rgb(35, 51, 85);
-    padding: 3rem;
-    box-sizing: border-box;
-}
-
-#mainWrapper {
-    margin-left: "25px";
-}
-
-
-/*
+    *,
+    *::after,
+    *::before {
+        margin: 0;
+        padding: 0;
+        box-sizing: inherit;
+    }
+    
+    html {
+        font-size: 62.5%;
+    }
+    
+    body {
+        font-family: "Lato", sans-serif;
+        font-weight: 400;
+        font-size: 1.6rem;
+        line-height: 1.7;
+        color: rgb(35, 51, 85);
+        padding: 3rem;
+        box-sizing: border-box;
+    }
+    
+    #mainWrapper {
+        margin-left: "25px";
+    }
+    /*
 #gameWindow {
     cursor: none;
 }
 */
+    
+    .btn {
+        background-color: cornflowerblue;
+        border: none;
+        color: white;
+        padding: 1rem 1rem;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 2rem;
+    }
+    
+    .btn:hover {
+        background-color: teal;
+    }
