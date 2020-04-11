@@ -107,6 +107,10 @@ window.onload = function() {
             this.player = new Player(windowWidth / 2 - 35, 90, 15, 3, 0);
             this.score = 0;
             this.running = true;
+            this.comboHits = 0;
+            this.comboPoints = 0;
+            this.comboTotalPoints = 0;
+            this.lastHitTime = 0;
             //Level 1
             for (i = 0; i < 6; i++) {
                 for (j = 0; j < 8; j++)
@@ -212,7 +216,20 @@ window.onload = function() {
                         }
 
                         box.durability -= 1;
-                        game.score = game.score + 100;
+
+                        if (game.lastHitTime > 0 && (new Date() - game.lastHitTime) < 1000) {
+                            game.comboPoints = Math.round((1000 - (new Date() - game.lastHitTime)) / 100) * 10;
+                            game.comboHits++;
+                            game.comboTotalPoints += 100 + game.comboPoints;
+                            document.getElementById('combo').innerHTML = game.comboHits + " Hit Combo +" + game.comboTotalPoints + "pts";
+                        } else {
+                            game.comboPoints = 0;
+                            game.comboHits = 1;
+                            game.comboTotalPoints = 100;
+                            document.getElementById('combo').innerHTML = "";
+                        }
+                        game.lastHitTime = new Date();
+                        game.score = game.score + 100 + game.comboPoints;
 
                         break;
 
@@ -238,6 +255,9 @@ window.onload = function() {
                     box.renderBox();
                 });
             }, 1000 / 66);
+
+            game.helperLoop = setInterval(function() {}, 100);
+
         };
     };
 

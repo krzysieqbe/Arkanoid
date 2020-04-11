@@ -1,48 +1,67 @@
-    *,
-    *::after,
-    *::before {
-        margin: 0;
-        padding: 0;
-        box-sizing: inherit;
-    }
-    
-    html {
-        font-size: 62.5%;
-    }
-    
-    body {
-        font-family: "Lato", sans-serif;
-        font-weight: 400;
-        font-size: 1.6rem;
-        line-height: 1.7;
-        color: rgb(35, 51, 85);
-        padding: 3rem;
-        box-sizing: border-box;
-    }
-    
-    #mainWrapper {
-        display: grid;
-        grid-template-columns: auto auto;
-        margin-left: "25px";
-    }
-    
-    #gameWindow {
-        cursor: none;
-    }
-    
-    .btn {
-        background-color: cornflowerblue;
-        border: none;
-        color: white;
-        padding: .5rem 1rem;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        cursor: pointer;
-        border-radius: 2rem;
-    }
-    
-    .btn:hover {
-        background-color: teal;
-    }
+@font-face {
+    font-family: "Arcade";
+    src: url("../fonts/arcade/ARCADE.TTF");
+}
+
+@font-face {
+    font-family: "AstronBoy";
+    src: url("../fonts/astron-boy/astron\ boy.ttf");
+}
+
+@font-face {
+    font-family: "Aurora";
+    src: url("../fonts/aurora/aurora.ttf");
+}
+
+@font-face {
+    font-family: "Neuropol";
+    src: url("../fonts/neuropol-x-free/neuropol\ x\ rg.ttf");
+}
+
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: "Neuropol";
+    font-size: 1.6rem;
+    line-height: 1.7;
+    color: rgb(35, 51, 85);
+    padding: 3rem;
+    box-sizing: border-box;
+}
+
+#mainWrapper {
+    display: grid;
+    grid-template-columns: 30rem auto;
+    margin-left: "25px";
+}
+
+#gameWindow {
+    cursor: none;
+}
+
+.btn {
+    background-color: cornflowerblue;
+    border: none;
+    color: white;
+    padding: .5rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 2rem;
+}
+
+.btn:hover {
+    background-color: teal;
+}
