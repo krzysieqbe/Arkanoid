@@ -136,6 +136,8 @@ window.onload = function() {
 
                 ball.speedX = 2 * ball.defaultSpeedX * (ballCenterX - playerCenterX) / (this.player.width / 2);
                 if (soundsOn) {
+                    ballBounceSnd.pause();
+                    ballBounceSnd.currentTime = 0;
                     ballBounceSnd.play();
                 }
 
@@ -145,6 +147,8 @@ window.onload = function() {
             if (ball.posX <= 0 || ball.posX >= windowWidth - ball.size * 2) {
                 ball.speedX = -1 * ball.speedX;
                 if (soundsOn) {
+                    ballBounceSnd.pause();
+                    ballBounceSnd.currentTime = 0;
                     ballBounceSnd.play();
                 }
             }
@@ -152,6 +156,8 @@ window.onload = function() {
             if (ball.posY <= 0) {
                 ball.speedY = -1 * ball.speedY;
                 if (soundsOn) {
+                    ballBounceSnd.pause();
+                    ballBounceSnd.currentTime = 0;
                     ballBounceSnd.play();
                 }
             }
@@ -171,6 +177,8 @@ window.onload = function() {
                     if (ball.posY < box.posY + box.height && ball.posY + ball.size * 2 > box.posY &&
                         ball.posX + ball.size * 2 > box.posX && ball.posX < box.posX + box.width) {
                         if (soundsOn) {
+                            brickSmashSnd.pause();
+                            brickSmashSnd.currentTime = 0;
                             brickSmashSnd.play();
                         }
                         collisionType = 1;
