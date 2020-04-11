@@ -2,21 +2,22 @@
 <html>
 
 <body>
+    <div style="display:none"> <audio controls id="music">
+        <source src="./sounds/bounce.wav" type="audio/wav">
+        </audio></div>
 
-    <p>Image to use:</p>
-    <img id="scream" width="220" height="277" src="./img/ball3d.png" alt="The Scream" style="display: none;">
-
-    <p>Canvas:</p>
-    <canvas id="myCanvas" width="240" height="297" style="border:1px solid #d3d3d3;">
-Your browser does not support the HTML5 canvas tag.
-</canvas>
+    <button onclick="play()" type="button">Play </button>
+    <button onclick="pause()" type="button">Pause</button>
 
     <script>
-        window.onload = function() {
-            var c = document.getElementById("myCanvas");
-            var ctx = c.getContext("2d");
-            var img = document.getElementById("scream");
-            ctx.drawImage(img, 0, 0, 8, 8);
+        var myMusic = document.getElementById("music");
+
+        function play() {
+            myMusic.play();
+        }
+
+        function pause() {
+            myMusic.pause();
         }
     </script>
 
