@@ -12,6 +12,8 @@ window.onload = function() {
     var ballImg = document.getElementById("ballImg");
     var paddleImg = document.getElementById("paddleImg");
     var brickImg = document.getElementById("brickImg");
+    var brick2Img = document.getElementById("brick2Img");
+    var brick3Img = document.getElementById("brick3Img");
     var bgImg = document.getElementById("bgImg");
 
     var ballBounceSnd = document.getElementById("ballBounce");
@@ -51,12 +53,23 @@ window.onload = function() {
         this.height = h;
         this.durability = d;
 
+
         this.renderBox = function() {
             if (this.durability > 0) {
-
+                this.pts = Math.round((100 / this.durability) / 10) * 10;
                 //context.fillStyle = "#2d68c6";
                 //context.fillRect(this.posX, this.posY, this.width, this.height);
-                context.drawImage(brickImg, this.posX, this.posY, this.width, this.height);
+                switch (this.durability) {
+                    case 1:
+                        context.drawImage(brickImg, this.posX, this.posY, this.width, this.height);
+                        break;
+                    case 2:
+                        context.drawImage(brick2Img, this.posX, this.posY, this.width, this.height);
+                        break;
+                    case 3:
+                        context.drawImage(brick3Img, this.posX, this.posY, this.width, this.height);
+                        break;
+                }
             }
         };
     };
@@ -115,7 +128,11 @@ window.onload = function() {
             for (i = 0; i < 6; i++) {
                 for (j = 0; j < 8; j++)
                     if (i && j && i < 5 && j < 7) {
-                        this.boxes.push(new Box(j * windowWidth / 8 + 1, i * windowHeight / 16 + 1, windowWidth / 8 - 2, windowHeight / 16 - 2, 1));
+                        var boxDur = 1;
+                        if (j == 1 || j == 6 || i == 4) {
+                            boxDur = 3;
+                        }
+                        this.boxes.push(new Box(j * windowWidth / 8 + 1, i * windowHeight / 16 + 1, windowWidth / 8 - 2, windowHeight / 16 - 2, boxDur));
                     }
             };
 
@@ -218,18 +235,18 @@ window.onload = function() {
                         box.durability -= 1;
 
                         if (game.lastHitTime > 0 && (new Date() - game.lastHitTime) < 1000) {
-                            game.comboPoints = Math.round((1000 - (new Date() - game.lastHitTime)) / 100) * 10;
+                            game.comboPoints = Math.round((1000 - (new Date() - game.lastHitTime)) / 100) * box.pts / 10;
                             game.comboHits++;
-                            game.comboTotalPoints += 100 + game.comboPoints;
+                            game.comboTotalPoints += box.pts + game.comboPoints;
                             document.getElementById('combo').innerHTML = game.comboHits + " Hit Combo +" + game.comboTotalPoints + "pts";
                         } else {
                             game.comboPoints = 0;
                             game.comboHits = 1;
-                            game.comboTotalPoints = 100;
+                            game.comboTotalPoints = box.pts;
                             document.getElementById('combo').innerHTML = "";
                         }
                         game.lastHitTime = new Date();
-                        game.score = game.score + 100 + game.comboPoints;
+                        game.score = game.score + box.pts + game.comboPoints;
 
                         break;
 
