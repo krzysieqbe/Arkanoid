@@ -4,7 +4,7 @@ window.onload = function() {
     var soundsOn = 1;
 
     document.getElementById('gameWindow').innerHTML = '<canvas id="gameStage" width="' + windowWidth + '" height="' + windowHeight + '" style="border:1px solid #d3d3d3;"></canvas>';
-
+//test
     var canvas = document.getElementById('gameStage');
     var context = canvas.getContext("2d");
     var audioBounce = document.getElementById("bounce");
