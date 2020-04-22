@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html>
 
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="js/lib/jquery.3.4.1.min.js"></script>
+    <script type="text/javascript" src="./levels.json"></script>
+</head>
+
 <body>
     <div style="display:none"> <audio controls id="music">
         <source src="./sounds/bounce.wav" type="audio/wav">
@@ -20,6 +26,19 @@
             myMusic.pause();
             myMusic.currentTime = 0;
         }
+
+        console.log(levels[0]["level1"]);
+        let array = levels[0]["level1"];
+        let levelLayout = [];
+        for (let i = 0; i < array.length; i++) {
+            let levelRow = array[i].toString().split(" ").map(Number);
+            let levelRowLayout = [];
+            for (let j = 0; j < levelRow.length; j++) {
+                levelRowLayout.push(levelRow[j]);
+            }
+            levelLayout.push(levelRowLayout);
+        }
+        console.log(levelLayout);
     </script>
 
 </body>

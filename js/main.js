@@ -7,7 +7,6 @@ window.onload = function() {
 
     var canvas = document.getElementById('gameStage');
     var context = canvas.getContext("2d");
-    var audioBounce = document.getElementById("bounce");
 
     var ballImg = document.getElementById("ballImg");
     var paddleImg = document.getElementById("paddleImg");
@@ -18,6 +17,7 @@ window.onload = function() {
 
     var ballBounceSnd = document.getElementById("ballBounce");
     var brickSmashSnd = document.getElementById("brickSmash");
+    var gameOverSnd = document.getElementById("gameOver");
 
     //renderBackground
     context.drawImage(bgImg, 0, 0, windowWidth, windowHeight);
@@ -27,8 +27,21 @@ window.onload = function() {
     };
 
     var updateScore = function(score) {
-        document.getElementById('score').innerHTML = score;
+
     };
+
+    var formatLevelLayout = function(array) {
+        let levelLayout = [];
+        for (let i = 0; i < array.length; i++) {
+            let levelRow = array[i].toString().split(" ").map(Number);
+            let levelRowLayout = [];
+            for (let j = 0; j < levelRow.length; j++) {
+                levelRowLayout.push(levelRow[j]);
+            }
+            levelLayout.push(levelRowLayout);
+        }
+        return levelLayout;
+    }
 
     function Player(x, w, h, l, s) {
         this.posX = x;
@@ -124,8 +137,18 @@ window.onload = function() {
             this.comboPoints = 0;
             this.comboTotalPoints = 0;
             this.lastHitTime = 0;
+            this.levels = [];
+            this.level = 1;
+
+            this.levels.push(0);
+            //getLevels 
+
+            for (let i = 0; i < levels.length; i++) {
+                let curLevel = formatLevelLayout(levels[i]);
+                game.levels.push(curLevel);
+            }
             //Level 1
-            for (i = 0; i < 6; i++) {
+            /*for (i = 0; i < 6; i++) {
                 for (j = 0; j < 8; j++)
                     if (i && j && i < 5 && j < 7) {
                         var boxDur = 1;
@@ -134,10 +157,42 @@ window.onload = function() {
                         }
                         this.boxes.push(new Box(j * windowWidth / 8 + 1, i * windowHeight / 16 + 1, windowWidth / 8 - 2, windowHeight / 16 - 2, boxDur));
                     }
-            };
+            };*/
+
+            this.generateBoxes();
 
             this.execute();
         };
+
+        this.generateBoxes = function() {
+            document.getElementById("level").innerHTML = "LeveL : " + game.level;
+            for (i = 0; i < this.levels[this.level].length; i++) {
+                for (j = 0; j < this.levels[game.level][i].length; j++) {
+                    boxDur = this.levels[this.level][i][j];
+                    this.boxes.push(new Box(j * windowWidth / 8 + 1, i * windowHeight / 16 + 1, windowWidth / 8 - 2, windowHeight / 16 - 2, boxDur));
+                }
+            };
+        }
+
+        this.checkClearLevel = function() {
+            let levelClear = 1;
+            for (i = 0; i < this.boxes.length; i++) {
+                if (this.boxes[i].durability) {
+                    levelClear = 0;
+                    break;
+                }
+            }
+
+            if (levelClear) {
+                game.level++;
+                game.boxes = [];
+                game.ball = undefined;
+
+                this.generateBoxes();
+                this.ball = new Ball(4, 3, 3);
+            }
+        };
+
 
         this.clearScreen = function() {
             //clear screen
@@ -153,7 +208,7 @@ window.onload = function() {
             var playerCenterX = this.player.posX + this.player.width / 2;
             //detecting player collision
             if (ballCenterY >= windowHeight - this.player.height && (ballCenterX >= this.player.posX && ballCenterX <= this.player.posX + this.player.width)) {
-                ball.speedY = -1 * ball.speedY;
+                ball.speedY = -1 * Math.abs(ball.speedY);
 
                 ball.speedX = 2 * ball.defaultSpeedX * (ballCenterX - playerCenterX) / (this.player.width / 2);
                 if (soundsOn) {
@@ -184,6 +239,7 @@ window.onload = function() {
             }
 
             if (ball.posY + ball.size * 2 >= windowHeight) {
+                gameOverSnd.play();
                 this.running = false;
             }
 
@@ -235,10 +291,10 @@ window.onload = function() {
                         box.durability -= 1;
 
                         if (game.lastHitTime > 0 && (new Date() - game.lastHitTime) < 1000) {
-                            game.comboPoints = Math.round((1000 - (new Date() - game.lastHitTime)) / 100) * box.pts / 10;
+                            game.comboPoints = Math.round((1000 - (new Date() - game.lastHitTime)) / 100) * box.pts * game.comboHits / 10;
                             game.comboHits++;
-                            game.comboTotalPoints += box.pts + game.comboPoints;
-                            document.getElementById('combo').innerHTML = game.comboHits + " Hit Combo +" + game.comboTotalPoints + "pts";
+                            game.comboTotalPoints += game.comboPoints;
+                            document.getElementById('combo').innerHTML = game.comboHits + " Hit Combo + " + game.comboTotalPoints + "pts";
                         } else {
                             game.comboPoints = 0;
                             game.comboHits = 1;
@@ -247,6 +303,8 @@ window.onload = function() {
                         }
                         game.lastHitTime = new Date();
                         game.score = game.score + box.pts + game.comboPoints;
+                        document.getElementById('score').innerHTML = game.score.toString() + ' pts';
+                        this.checkClearLevel();
 
                         break;
 
@@ -262,7 +320,7 @@ window.onload = function() {
                     alert('Game over ! Your final score is : ' + game.score);
                     clearInterval(game.gameLoop);
                 };
-                updateScore(game.score);
+
                 game.clearScreen();
                 game.ball.moveBall(game.player);
                 game.checkForCollision(game.ball);
@@ -334,6 +392,7 @@ window.onload = function() {
     });
 
     game = new Game();
+
 
     document.getElementById("startBtn").addEventListener('click', function(e) {
         game.init();

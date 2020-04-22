@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/style.css">
     <script type="text/javascript" src="js/lib/jquery.3.4.1.min.js"></script>
+    <script type="text/javascript" src="./levels.json"></script>
 </head>
 
 <body>
@@ -16,20 +17,21 @@
         Arkanoid
     </h1>
     <div id="mainWrapper">
-        <div>
-            <div>
+        <div id="left-pane">
+
+            <div id="btn-wrapper">
                 <div class="btn" id="startBtn">
                     New Game
                 </div>
             </div>
-            <div style="display: inline-block;">
-                <p style='display:inline'>
-                    Score :
-                </p>
-                <p id="score" style="display: inline;"></p>
-                <br/>
-                <p id="combo"></p>
+
+            <div id="level">Level : </div>
+            <div id="score-wrapper">
+                <div>Score : </div>
+                <div id="score"></div>
             </div>
+            <div id="combo"></div>
+
         </div>
         <div id="gameWindow"></div>
     </div>
@@ -46,6 +48,9 @@
     <div style="display:none"> <audio controls id="brickSmash">
             <source src="./sounds/brickSmash.mp3" type="audio/mpeg">
             </audio></div>
+    <div style="display:none"> <audio controls id="gameOver">
+                <source src="./sounds/game_over.wav" type="audio/wav">
+                </audio></div>
     <script type="text/javascript" src="js/main.js"></script>
 </body>
 

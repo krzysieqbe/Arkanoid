@@ -46,15 +46,26 @@ body {
     margin-left: "25px";
 }
 
+#left-pane {
+    margin-top: 2rem;
+    width: 100%;
+}
+
 #gameWindow {
     cursor: none;
+}
+
+#btn-wrapper {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
 .btn {
     background-color: cornflowerblue;
     border: none;
     color: white;
-    padding: .5rem 1rem;
+    padding: .7rem 2.5rem;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -65,4 +76,19 @@ body {
 
 .btn:hover {
     background-color: teal;
+}
+
+#score-wrapper {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+#score {
+    text-align: right;
+    margin-right: 1.5rem;
+}
+
+#combo {
+    text-align: right;
 }
