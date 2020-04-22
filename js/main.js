@@ -147,17 +147,7 @@ window.onload = function() {
                 let curLevel = formatLevelLayout(levels[i]);
                 game.levels.push(curLevel);
             }
-            //Level 1
-            /*for (i = 0; i < 6; i++) {
-                for (j = 0; j < 8; j++)
-                    if (i && j && i < 5 && j < 7) {
-                        var boxDur = 1;
-                        if (j == 1 || j == 6 || i == 4) {
-                            boxDur = 3;
-                        }
-                        this.boxes.push(new Box(j * windowWidth / 8 + 1, i * windowHeight / 16 + 1, windowWidth / 8 - 2, windowHeight / 16 - 2, boxDur));
-                    }
-            };*/
+            $('#blinking-text').show();
 
             this.generateBoxes();
 
@@ -304,6 +294,9 @@ window.onload = function() {
                         game.lastHitTime = new Date();
                         game.score = game.score + box.pts + game.comboPoints;
                         document.getElementById('score').innerHTML = game.score.toString() + ' pts';
+                        $('#score').animate({ fontSize: "1.8rem" }, "fast", "linear", function() {
+                            $('#score').animate({ fontSize: "1.6rem" }, "slow", "linear");
+                        })
                         this.checkClearLevel();
 
                         break;
@@ -369,12 +362,14 @@ window.onload = function() {
 
     document.addEventListener("dblclick", function(e) {
         game.ball.init = 1;
+        $('#blinking-text').hide();
     });
 
     $(document).keydown(function(e) {
         switch (e.which) {
             case 32:
                 game.ball.init = 1;
+                $('#blinking-text').hide();
                 break;
 
             case 37:

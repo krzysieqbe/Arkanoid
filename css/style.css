@@ -48,7 +48,7 @@ body {
 
 #left-pane {
     margin-top: 2rem;
-    width: 100%;
+    width: 100%
 }
 
 #gameWindow {
@@ -91,4 +91,47 @@ body {
 
 #combo {
     text-align: right;
+    margin-right: 1.5rem;
+}
+
+#blinking-text {
+    animation: blinkingText 1.2s infinite;
+    margin-left: 2.5rem;
+    display: none;
+}
+
+@keyframes blinkingText {
+    0% {
+        color: #eb4f34;
+    }
+    49% {
+        color: #eb4f34;
+    }
+    60% {
+        color: transparent;
+    }
+    99% {
+        color: transparent;
+    }
+    100% {
+        color: #eb4f34;
+    }
+}
+
+@keyframes enlargeText {
+    0% {
+        font-size: 1.65rem;
+    }
+    49% {
+        font-size: 1.8rem;
+    }
+    60% {
+        font-size: 1.75rem;
+    }
+    99% {
+        font-size: 1.65rem;
+    }
+    100% {
+        font-size: 1.6rem;
+    }
 }
