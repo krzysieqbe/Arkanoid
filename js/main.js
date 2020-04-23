@@ -101,6 +101,11 @@ window.onload = function() {
         this.renderBall = function() {
             //context.arc(this.posX, this.posY, this.size, 0, 2 * Math.PI);
             //context.fillStyle = "#da63ed";
+            if (this.init) {
+                $('#blinking-text').hide();
+            } else {
+                $('#blinking-text').show();
+            }
             context.drawImage(ballImg, this.posX, this.posY, 2 * this.size, 2 * this.size);
             //context.fill();
         };
@@ -147,7 +152,6 @@ window.onload = function() {
                 let curLevel = formatLevelLayout(levels[i]);
                 game.levels.push(curLevel);
             }
-            $('#blinking-text').show();
 
             this.generateBoxes();
 
@@ -285,6 +289,9 @@ window.onload = function() {
                             game.comboHits++;
                             game.comboTotalPoints += game.comboPoints;
                             document.getElementById('combo').innerHTML = game.comboHits + " Hit Combo + " + game.comboTotalPoints + "pts";
+                            $('#combo').animate({ fontSize: "1.8rem" }, "fast", "linear", function() {
+                                $('#combo').animate({ fontSize: "1.6rem" }, "slow", "linear");
+                            })
                         } else {
                             game.comboPoints = 0;
                             game.comboHits = 1;
@@ -324,7 +331,7 @@ window.onload = function() {
                 });
             }, 1000 / 66);
 
-            game.helperLoop = setInterval(function() {}, 100);
+            //game.helperLoop = setInterval(function() {}, 100);
 
         };
     };

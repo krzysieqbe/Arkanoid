@@ -82,6 +82,7 @@ body {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    height: 2.2rem;
 }
 
 #score {
@@ -92,6 +93,7 @@ body {
 #combo {
     text-align: right;
     margin-right: 1.5rem;
+    height: 2.2rem;
 }
 
 #blinking-text {
