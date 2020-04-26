@@ -96,6 +96,12 @@ body {
     height: 2.2rem;
 }
 
+#lives-wrapper {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
 #blinking-text {
     animation: blinkingText 1.2s infinite;
     margin-left: 2.5rem;

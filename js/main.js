@@ -18,6 +18,7 @@ window.onload = function() {
     var ballBounceSnd = document.getElementById("ballBounce");
     var brickSmashSnd = document.getElementById("brickSmash");
     var gameOverSnd = document.getElementById("gameOver");
+    var gameOver2Snd = document.getElementById("gameOver2");
 
     //renderBackground
     context.drawImage(bgImg, 0, 0, windowWidth, windowHeight);
@@ -160,6 +161,7 @@ window.onload = function() {
 
         this.generateBoxes = function() {
             document.getElementById("level").innerHTML = "LeveL : " + game.level;
+            document.getElementById("lives").innerHTML = " x  " + game.player.lives;
             for (i = 0; i < this.levels[this.level].length; i++) {
                 for (j = 0; j < this.levels[game.level][i].length; j++) {
                     boxDur = this.levels[this.level][i][j];
@@ -233,8 +235,15 @@ window.onload = function() {
             }
 
             if (ball.posY + ball.size * 2 >= windowHeight) {
-                gameOverSnd.play();
-                this.running = false;
+                this.player.lives--;
+                if (this.player.lives) {
+                    gameOver2Snd.play();
+                    document.getElementById("lives").innerHTML = " x  " + game.player.lives;
+                    this.ball = new Ball(4, 3, 3);
+                } else {
+                    gameOverSnd.play();
+                    this.running = false;
+                }
             }
 
             //detecting box collision

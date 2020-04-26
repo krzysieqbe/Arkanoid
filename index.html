@@ -7,8 +7,10 @@
     <title>Arkanoid</title>
     <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/lib/jquery-ui.min.css">
     <link rel="stylesheet" href="css/style.css">
     <script type="text/javascript" src="js/lib/jquery.3.4.1.min.js"></script>
+    <script type="text/javascript" src="js/lib/jquery-ui.min.js"></script>
     <script type="text/javascript" src="./levels.json"></script>
 </head>
 
@@ -24,7 +26,10 @@
                     New Game
                 </div>
             </div>
-
+            <div id="lives-wrapper">
+                <img id="paddleImg" src="./img/paddle3d.png" width="70" height="10">
+                <div id="lives"></div>
+            </div>
             <div id="level">Level : </div>
             <div id="score-wrapper">
                 <div>Score : </div>
@@ -40,7 +45,7 @@
     </div>
 
     <img id="ballImg" src="./img/ball3d.png" width="20" height="20" style="display: none;">
-    <img id="paddleImg" src="./img/paddle3d.png" width="20" height="20" style="display: none;">
+    <!--img id="paddleImg" src="./img/paddle3d.png" width="20" height="20" style="display: none;"-->
     <img id="brickImg" src="./img/brick3d.png" width="20" height="20" style="display: none;">
     <img id="brick2Img" src="./img/brick3d2.png" width="20" height="20" style="display: none;">
     <img id="brick3Img" src="./img/brick3d3.png" width="20" height="20" style="display: none;">
@@ -54,6 +59,9 @@
     <div style="display:none"> <audio controls id="gameOver">
                 <source src="./sounds/game_over.wav" type="audio/wav">
                 </audio></div>
+    <div style="display:none"> <audio controls id="gameOver2">
+        <source src="./sounds/game_over_2.wav" type="audio/wav">
+        </audio></div>
     <script type="text/javascript" src="js/main.js"></script>
 </body>
 
