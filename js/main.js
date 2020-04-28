@@ -20,16 +20,9 @@ window.onload = function() {
     var gameOverSnd = document.getElementById("gameOver");
     var gameOver2Snd = document.getElementById("gameOver2");
 
+    var sprinkles = [];
     //renderBackground
     context.drawImage(bgImg, 0, 0, windowWidth, windowHeight);
-
-    var debug = function(text) {
-        document.getElementById('debug').innerHTML = text;
-    };
-
-    var updateScore = function(score) {
-
-    };
 
     var formatLevelLayout = function(array) {
         let levelLayout = [];
@@ -42,6 +35,19 @@ window.onload = function() {
             levelLayout.push(levelRowLayout);
         }
         return levelLayout;
+    }
+
+    function Sprinkle(x, y, w, h, col) {
+        this.posX = x;
+        this.posY = y;
+        this.width = w;
+        this.height = h;
+        this.opacity = 1.0;
+        this.iteration = 0;
+        this.column = col;
+        this.gravity = 0.02;
+        this.speedY = -0.5 + (0.1 - 0.2 * Math.round(Math.random()));
+        this.speedX = (col - (4 + Math.round(Math.random()))) * 0.03 + (0.1 - 0.2 * Math.round(Math.random()));;
     }
 
     function Player(x, w, h, l, s) {
@@ -312,7 +318,21 @@ window.onload = function() {
                         document.getElementById('score').innerHTML = game.score.toString() + ' pts';
                         $('#score').animate({ fontSize: "1.8rem" }, "fast", "linear", function() {
                             $('#score').animate({ fontSize: "1.6rem" }, "slow", "linear");
-                        })
+                        });
+
+                        if (!box.durability) {
+                            for (let i = 0; i < 4; i++) {
+                                var sprinkRow = [];
+                                for (let j = 0; j < 9; j++) {
+
+                                    let sprinkle = new Sprinkle(box.posX + j * box.width / 9 + 1, box.posY + i * box.height / 4 + 1, box.width / 9 - 1, box.height / 4 - 1, j);
+                                    console.log(sprinkle);
+                                    sprinkRow.push(sprinkle);
+                                }
+                                sprinkles.push(sprinkRow);
+                            }
+                        };
+
                         this.checkClearLevel();
 
                         break;
@@ -338,8 +358,31 @@ window.onload = function() {
                 game.boxes.forEach(function(box) {
                     box.renderBox();
                 });
-            }, 1000 / 66);
 
+            }, 1000 / 66);
+            if (sprinkles.length) {
+                sprinkles.forEach(function(sprinkleRow, rowId) {
+                    sprinkleRow.forEach(function(sprinkle, id) {
+                        sprinkle.iteration++;
+                        sprinkle.opacity -= sprinkle.iteration * 0.0001;
+                        context.globalAlpha = sprinkle.opacity;
+                        context.fillStyle = "rgb(41, 70, 135)";
+                        context.fillRect(sprinkle.posX, sprinkle.posY, sprinkle.width, sprinkle.height);
+                        context.globalAlpha = 1.0;
+                        sprinkle.posX += sprinkle.speedX;
+                        sprinkle.speedY += sprinkle.gravity;
+                        sprinkle.posY += sprinkle.speedY;
+
+                        //if (context.globalAlpha < 0.1) {
+                        if (sprinkle.opacity < 0.1) {
+                            sprinkles[rowId].splice(id, 1);
+                            if (!sprinkles[rowId].length) {
+                                sprinkles.splice(rowId, 1);
+                            }
+                        }
+                    });
+                });
+            };
             //game.helperLoop = setInterval(function() {}, 100);
 
         };
