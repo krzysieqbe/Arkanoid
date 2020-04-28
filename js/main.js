@@ -358,31 +358,32 @@ window.onload = function() {
                 game.boxes.forEach(function(box) {
                     box.renderBox();
                 });
+                if (sprinkles.length) {
+                    sprinkles.forEach(function(sprinkleRow, rowId) {
+                        sprinkleRow.forEach(function(sprinkle, id) {
+                            sprinkle.iteration++;
+                            sprinkle.opacity -= sprinkle.iteration * 0.0001;
+                            context.globalAlpha = sprinkle.opacity;
+                            context.fillStyle = "rgb(41, 70, 135)";
+                            context.fillRect(sprinkle.posX, sprinkle.posY, sprinkle.width, sprinkle.height);
+                            context.globalAlpha = 1.0;
+                            sprinkle.posX += sprinkle.speedX;
+                            sprinkle.speedY += sprinkle.gravity;
+                            sprinkle.posY += sprinkle.speedY;
+
+                            //if (context.globalAlpha < 0.1) {
+                            if (sprinkle.opacity < 0.1) {
+                                sprinkles[rowId].splice(id, 1);
+                                if (!sprinkles[rowId].length) {
+                                    sprinkles.splice(rowId, 1);
+                                }
+                            }
+                        });
+                    });
+                };
 
             }, 1000 / 66);
-            if (sprinkles.length) {
-                sprinkles.forEach(function(sprinkleRow, rowId) {
-                    sprinkleRow.forEach(function(sprinkle, id) {
-                        sprinkle.iteration++;
-                        sprinkle.opacity -= sprinkle.iteration * 0.0001;
-                        context.globalAlpha = sprinkle.opacity;
-                        context.fillStyle = "rgb(41, 70, 135)";
-                        context.fillRect(sprinkle.posX, sprinkle.posY, sprinkle.width, sprinkle.height);
-                        context.globalAlpha = 1.0;
-                        sprinkle.posX += sprinkle.speedX;
-                        sprinkle.speedY += sprinkle.gravity;
-                        sprinkle.posY += sprinkle.speedY;
 
-                        //if (context.globalAlpha < 0.1) {
-                        if (sprinkle.opacity < 0.1) {
-                            sprinkles[rowId].splice(id, 1);
-                            if (!sprinkles[rowId].length) {
-                                sprinkles.splice(rowId, 1);
-                            }
-                        }
-                    });
-                });
-            };
             //game.helperLoop = setInterval(function() {}, 100);
 
         };
