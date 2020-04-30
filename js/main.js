@@ -362,7 +362,7 @@ window.onload = function() {
                     sprinkles.forEach(function(sprinkleRow, rowId) {
                         sprinkleRow.forEach(function(sprinkle, id) {
                             sprinkle.iteration++;
-                            sprinkle.opacity -= sprinkle.iteration * 0.0001;
+                            sprinkle.opacity -= sprinkle.iteration * 0.1;
                             context.globalAlpha = sprinkle.opacity;
                             context.fillStyle = "rgb(41, 70, 135)";
                             context.fillRect(sprinkle.posX, sprinkle.posY, sprinkle.width, sprinkle.height);
